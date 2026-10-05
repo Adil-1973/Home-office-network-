@@ -151,4 +151,4 @@ No hardware needed. Follow [docs/PACKET_TRACER_LAB.md](docs/PACKET_TRACER_LAB.md
 
 ## Author
 
-Muhammad Adil · [GitHub](https://github.com/<Adil_IT>) · [LinkedIn](https://linkedin.com/in/<networkadil>)
+Muhammad Adil · [GitHub](https://github.com/<Adil_IT>) · [LinkedIn](https://linkedin.com/in/<networkadil/>)
