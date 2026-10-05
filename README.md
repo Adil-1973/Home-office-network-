@@ -137,12 +137,6 @@ python automation/ai_assistant.py troubleshoot "Sales cannot reach the internet"
 
 No hardware needed. Follow [docs/PACKET_TRACER_LAB.md](docs/PACKET_TRACER_LAB.md) for devices, cabling, configs, a ping test matrix and troubleshooting. Add your finished lab as `lab-files/office-network.pkt`.
 
-## Security notes
-
-- Credentials and the API key live in `.env`, which is git-ignored. Never commit it.
-- Backups and AI prompts are masked for passwords, SNMP communities and keys. Review the masking rules in `automation/common.py` before using real production configs.
-- AI output is advice, not an authority. Read suggested commands before applying them.
-- Test in a lab before touching production devices.
 
 ## Known limitations
 
@@ -152,18 +146,9 @@ No hardware needed. Follow [docs/PACKET_TRACER_LAB.md](docs/PACKET_TRACER_LAB.md
 - The deployment and AI scripts have not been tested against live devices or the API, so run them in a lab first.
 - The core template includes `switchport trunk encapsulation dot1q`, which some switch models (such as the Packet Tracer 3650) reject. Remove the line if yours does.
 
-## Roadmap
 
-- [ ] Server VLAN and guest Wi-Fi VLAN
-- [ ] Redundant core with HSRP and EtherChannel
-- [ ] Scheduled backups with automatic Git commits
-- [ ] Web dashboard for status and AI chat
-- [ ] Syslog and SNMP monitoring
 
-## License
-
-MIT. See [LICENSE](LICENSE).
 
 ## Author
 
-Your Name · [GitHub](https://github.com/<your-username>) · [LinkedIn](https://linkedin.com/in/<your-profile>)
+Muhammad Adil · [GitHub](https://github.com/<Adil_IT>) · [LinkedIn](https://linkedin.com/in/<networkadil>)
