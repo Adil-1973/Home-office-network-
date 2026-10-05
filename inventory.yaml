@@ -1,0 +1,23 @@
+# Single source of truth for the office network
+vlans:
+  - {id: 10, name: IT,    subnet: 192.168.10, role: it}
+  - {id: 20, name: HR,    subnet: 192.168.20, role: hr}
+  - {id: 30, name: ADMIN, subnet: 192.168.30, role: admin}
+  - {id: 40, name: SALES, subnet: 192.168.40, role: sales}
+mgmt: {id: 99, name: MGMT, subnet: 192.168.99}
+
+dhcp_server: 10.0.0.2          # edge router relays/serves DHCP
+uplink: {ip: 10.0.0.1, mask: 255.255.255.252, port: g1/0/1, next_hop: 10.0.0.2}
+
+# Which departments each department may NOT reach (IT has no restrictions)
+deny:
+  hr:    [admin, sales]
+  sales: [hr, it]
+  admin: [hr, it]
+
+devices:
+  - {name: CORE,     type: core,   mgmt_ip: 192.168.99.1,  trunk_ports: "g1/0/2 - 5"}
+  - {name: SW-IT,    type: access, mgmt_ip: 192.168.99.11, vlan: 10}
+  - {name: SW-HR,    type: access, mgmt_ip: 192.168.99.12, vlan: 20}
+  - {name: SW-ADMIN, type: access, mgmt_ip: 192.168.99.13, vlan: 30}
+  - {name: SW-SALES, type: access, mgmt_ip: 192.168.99.14, vlan: 40}

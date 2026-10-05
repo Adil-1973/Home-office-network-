@@ -1,0 +1,19 @@
+hostname SW-ADMIN
+vlan 30
+ name ADMIN
+vlan 99
+ name MGMT
+interface g0/1
+ switchport mode trunk
+ switchport trunk allowed vlan 30,99
+interface range f0/1 - 24
+ switchport mode access
+ switchport access vlan 30
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ switchport port-security
+ switchport port-security maximum 2
+ switchport port-security violation restrict
+interface vlan 99
+ ip address 192.168.99.13 255.255.255.0
+ip default-gateway 192.168.99.1

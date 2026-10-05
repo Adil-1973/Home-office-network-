@@ -1,0 +1,39 @@
+hostname {{ d.name }}
+ip routing
+{% for v in vlans + [mgmt] %}
+vlan {{ v.id }}
+ name {{ v.name }}
+{% endfor %}
+{% for v in vlans %}
+interface vlan {{ v.id }}
+ ip address {{ v.subnet }}.1 255.255.255.0
+ ip helper-address {{ dhcp_server }}
+{% if v.role in deny %}
+ ip access-group {{ v.name }}-IN in
+{% endif %}
+{% endfor %}
+interface vlan {{ mgmt.id }}
+ ip address {{ mgmt.subnet }}.1 255.255.255.0
+interface {{ uplink.port }}
+ no switchport
+ ip address {{ uplink.ip }} {{ uplink.mask }}
+interface range {{ d.trunk_ports }}
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk allowed vlan {{ (vlans + [mgmt]) | map(attribute='id') | join(',') }}
+ip route 0.0.0.0 0.0.0.0 {{ uplink.next_hop }}
+{% for role, blocked in deny.items() %}
+{% set src = vlans | selectattr('role', 'equalto', role) | first %}
+ip access-list extended {{ src.name }}-IN
+ permit udp any eq bootpc any eq bootps
+ permit ip {{ src.subnet }}.0 0.0.0.255 {{ src.subnet }}.0 0.0.0.255
+{% for b in blocked %}
+{% set dst = vlans | selectattr('role', 'equalto', b) | first %}
+{% if b == 'it' %}
+ permit icmp {{ src.subnet }}.0 0.0.0.255 {{ dst.subnet }}.0 0.0.0.255 echo-reply
+ permit tcp {{ src.subnet }}.0 0.0.0.255 {{ dst.subnet }}.0 0.0.0.255 established
+{% endif %}
+ deny ip {{ src.subnet }}.0 0.0.0.255 {{ dst.subnet }}.0 0.0.0.255
+{% endfor %}
+ permit ip {{ src.subnet }}.0 0.0.0.255 any
+{% endfor %}
